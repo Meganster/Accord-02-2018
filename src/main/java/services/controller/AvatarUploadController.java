@@ -48,8 +48,7 @@ public class AvatarUploadController {
         final String nameFile = String.valueOf(userFromSession.getId()) + typeOfAvatar;
 
         if (userFromSession == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new ServerResponse("Error", "You are not login"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ServerResponse("Error", "You are not login"));
         }
 
         if (!file.isEmpty()) {
@@ -64,8 +63,7 @@ public class AvatarUploadController {
 
                 try {
                     if (!userService.updateAvatar(userFromSession)) {
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                                .body(new ServerResponse("Error", "Bad file"));
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ServerResponse("Error", "Bad file"));
                     }
                 } catch (DatabaseConnectionException e) {
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ServerResponse("Error",
@@ -74,12 +72,10 @@ public class AvatarUploadController {
 
                 return ResponseEntity.status(HttpStatus.OK).body(new ServerResponse("Ok", "Successful loading"));
             } catch (IOException e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new ServerResponse("Error", "Unsuccessful loading"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ServerResponse("Error", "Unsuccessful loading"));
             }
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ServerResponse("Error", "File is empty"));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ServerResponse("Error", "File is empty"));
     }
 }

@@ -23,7 +23,6 @@ public class User {
         this.password = user.password;
         this.email = user.email;
         this.rating = user.rating;
-        this.avatar = user.avatar;
     }
 
     public User() {
@@ -80,7 +79,6 @@ public class User {
     }
 
     public void setDefaultAvatar() {
-        this.avatar = "default.jpg";
-
+        this.avatar = "default";
     }
 }
