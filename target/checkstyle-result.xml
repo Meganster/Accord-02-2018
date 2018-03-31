@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="8.8">
+<file name="/Users/yury/Projects/2_semester/Accord-02-2018 (rk1)/src/main/java/services/Application.java">
+</file>
+<file name="/Users/yury/Projects/2_semester/Accord-02-2018 (rk1)/src/main/java/services/dao/UserDAO.java">
+</file>
+<file name="/Users/yury/Projects/2_semester/Accord-02-2018 (rk1)/src/main/java/services/exceptions/DatabaseConnectionException.java">
+</file>
+<file name="/Users/yury/Projects/2_semester/Accord-02-2018 (rk1)/src/main/java/services/controller/ScoreBoardController.java">
+</file>
+<file name="/Users/yury/Projects/2_semester/Accord-02-2018 (rk1)/src/main/java/services/controller/AvatarUploadController.java">
+</file>
+<file name="/Users/yury/Projects/2_semester/Accord-02-2018 (rk1)/src/main/java/services/controller/UserController.java">
+</file>
+<file name="/Users/yury/Projects/2_semester/Accord-02-2018 (rk1)/src/main/java/services/model/ScoreBoard.java">
+</file>
+<file name="/Users/yury/Projects/2_semester/Accord-02-2018 (rk1)/src/main/java/services/model/User.java">
+</file>
+<file name="/Users/yury/Projects/2_semester/Accord-02-2018 (rk1)/src/main/java/services/model/ServerResponse.java">
+</file>
+<file name="/Users/yury/Projects/2_semester/Accord-02-2018 (rk1)/src/main/resources/application.properties">
+</file>
+</checkstyle>
