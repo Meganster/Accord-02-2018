@@ -4,8 +4,3 @@ jdk:
 sudo: required
 addons:
   postgresql: "9.6"
-services:
-  - postgresql
-before_script:
-  - psql -c "create database accord;" -U postgres
-  - psql -c "grant all on database accord to postgres;" -U postgres
