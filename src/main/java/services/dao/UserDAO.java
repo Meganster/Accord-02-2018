@@ -2,6 +2,7 @@ package services.dao;
 
 
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 import services.exceptions.DatabaseConnectionException;
 import services.model.User;
@@ -140,8 +141,11 @@ public class UserDAO {
             final int offset = (page - 1) * userPerPage;
             final String sql = "SELECT * FROM \"User\" ORDER BY rating DESC LIMIT ? OFFSET ?;";
             return jdbcTemplate.query(sql, new Object[]{userPerPage, offset}, new UserInfoMapper());
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return null;
+        } catch (DataAccessException e) {
+            logger.warn("Exception : ", e);
+            throw new DatabaseConnectionException("Can't connect to the database", e);
         }
     }
 
