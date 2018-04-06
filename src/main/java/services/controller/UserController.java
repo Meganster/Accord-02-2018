@@ -50,37 +50,44 @@ public class UserController {
 
     @PostMapping(value = "/register", produces = "application/json")
     public ResponseEntity<?> register(@RequestBody @NotNull User userToRegister, HttpSession httpSession) {
-        final StringBuilder errorString = new StringBuilder();
+        // проверим не залогинен ли уже пользователь
+        final User userFromSession = (User) httpSession.getAttribute(SESSION_KEY);
+        if (userFromSession == null) {
+            final StringBuilder errorString = new StringBuilder();
 
-        if (isEmptyField(userToRegister.getEmail())) {
-            errorString.append(ERROR_EMAIL);
+            if (isEmptyField(userToRegister.getEmail())) {
+                errorString.append(ERROR_EMAIL);
+            }
+
+            if (isEmptyField(userToRegister.getPassword())) {
+                errorString.append(' ' + ERROR_PASSWORD);
+            }
+
+            if (isEmptyField(userToRegister.getNickname())) {
+                errorString.append(' ' + ERROR_NICKNAME);
+            }
+
+            if (errorString.length() > 0) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ServerResponse("Error",
+                        errorString.toString()));
+            }
+
+            if (!userService.register(userToRegister)) {
+                // если попали в этот блок
+                // значит такой юзер с таким мейлом уже существует
+                // поэтому просто вернем ошибку
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ServerResponse("Error",
+                        "User with same email already exists"));
+            }
+
+            final User userForSession = userService.getUser(userToRegister.getEmail());
+            httpSession.setAttribute(SESSION_KEY, userForSession);
+
+            return ResponseEntity.status(HttpStatus.OK).body(userForSession);
         }
 
-        if (isEmptyField(userToRegister.getPassword())) {
-            errorString.append(' ' + ERROR_PASSWORD);
-        }
-
-        if (isEmptyField(userToRegister.getNickname())) {
-            errorString.append(' ' + ERROR_NICKNAME);
-        }
-
-        if (errorString.length() > 0) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ServerResponse("Error",
-                    errorString.toString()));
-        }
-
-        if (!userService.register(userToRegister)) {
-            // если попали в этот блок
-            // значит такой юзер с таким мейлом уже существует
-            // поэтому просто вернем ошибку
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ServerResponse("Error",
-                    "User with same email already exists"));
-        }
-
-        final User userForSession = userService.getUser(userToRegister.getEmail());
-        httpSession.setAttribute(SESSION_KEY, userForSession);
-
-        return ResponseEntity.status(HttpStatus.OK).body(userForSession);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new
+                ServerResponse("Error", "You have been already login"));
     }
 
 
@@ -161,36 +168,43 @@ public class UserController {
 
     @PostMapping(value = "/login", produces = "application/json")
     public ResponseEntity<?> login(@RequestBody User userToLogin, HttpSession httpSession) {
-        final StringBuilder errorString = new StringBuilder();
+        // проверим не залогинен ли уже пользователь
+        final User userFromSession = (User) httpSession.getAttribute(SESSION_KEY);
+        if (userFromSession == null) {
+            final StringBuilder errorString = new StringBuilder();
 
 
-        if (isEmptyField(userToLogin.getEmail())) {
-            errorString.append(ERROR_EMAIL);
-        }
-
-        if (isEmptyField(userToLogin.getPassword()) || userToLogin.getPassword().length() > MAX_LENGTH_PASSWORD) {
-            errorString.append(' ' + ERROR_PASSWORD);
-        }
-
-        if (errorString.length() > 0) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ServerResponse("Error",
-                    errorString.toString()));
-        }
-
-        try {
-            if (!userService.login(userToLogin)) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ServerResponse("Error",
-                        "Invalid email or password"));
+            if (isEmptyField(userToLogin.getEmail())) {
+                errorString.append(ERROR_EMAIL);
             }
-        } catch (DatabaseConnectionException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ServerResponse("Error",
-                    e.getMessage()));
+
+            if (isEmptyField(userToLogin.getPassword()) || userToLogin.getPassword().length() > MAX_LENGTH_PASSWORD) {
+                errorString.append(' ' + ERROR_PASSWORD);
+            }
+
+            if (errorString.length() > 0) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ServerResponse("Error",
+                        errorString.toString()));
+            }
+
+            try {
+                if (!userService.login(userToLogin)) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ServerResponse("Error",
+                            "Invalid email or password"));
+                }
+            } catch (DatabaseConnectionException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ServerResponse("Error",
+                        e.getMessage()));
+            }
+
+            final User userForSession = userService.getUser(userToLogin.getEmail());
+            httpSession.setAttribute(SESSION_KEY, userForSession);
+
+            return ResponseEntity.status(HttpStatus.OK).body(userForSession);
         }
 
-        final User userForSession = userService.getUser(userToLogin.getEmail());
-        httpSession.setAttribute(SESSION_KEY, userForSession);
-
-        return ResponseEntity.status(HttpStatus.OK).body(userForSession);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new
+                ServerResponse("Error", "You have been already login"));
     }
 
     @DeleteMapping(value = "/logout", produces = "application/json")
