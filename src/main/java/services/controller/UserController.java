@@ -72,12 +72,17 @@ public class UserController {
                         errorString.toString()));
             }
 
-            if (!userService.register(userToRegister)) {
-                // если попали в этот блок
-                // значит такой юзер с таким мейлом уже существует
-                // поэтому просто вернем ошибку
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ServerResponse("Error",
-                        "User with same email already exists"));
+            try {
+                if (!userService.register(userToRegister)) {
+                    // если попали в этот блок
+                    // значит такой юзер с таким мейлом уже существует
+                    // поэтому просто вернем ошибку
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ServerResponse("Error",
+                            "User with same email or nickname already exists"));
+                }
+            } catch (DatabaseConnectionException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                        new ServerResponse("Error", e.getMessage()));
             }
 
             final User userForSession = userService.getUser(userToRegister.getEmail());

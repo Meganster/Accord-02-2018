@@ -1,6 +1,7 @@
 package services.dao;
 
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 import services.exceptions.DatabaseConnectionException;
 import services.model.User;
@@ -14,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,13 +30,16 @@ public class UserDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Boolean register(@NotNull User userToRegister) {
+    public Boolean register(@NotNull User userToRegister) throws DatabaseConnectionException {
         try {
             final String sql = "INSERT INTO \"User\" (email, nickname, password) VALUES (?, ?, ?)";
             jdbcTemplate.update(sql, userToRegister.getEmail(), userToRegister.getNickname(), userToRegister.getPassword());
             return true;
-        } catch (DataAccessException e) {
+        } catch (DuplicateKeyException e) {
             return false;
+        } catch (DataAccessException e) {
+            logger.warn("Exception : ", e);
+            throw new DatabaseConnectionException("Can't connect to the database", e);
         }
     }
 
