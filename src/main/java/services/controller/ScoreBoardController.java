@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin(origins = {"*", "http://localhost:8000"})
+@CrossOrigin(origins = {"*", "http://127.0.0.1:8000"})
 public class ScoreBoardController {
     private static final int USER_PER_PAGE = 10;
     private static UserDAO userService;

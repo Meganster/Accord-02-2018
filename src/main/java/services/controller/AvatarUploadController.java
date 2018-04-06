@@ -15,7 +15,7 @@ import java.io.*;
 import static services.Application.PATH_AVATARS_FOLDER;
 
 @RestController
-@CrossOrigin(origins = {"*", "http://localhost:8000"})
+@CrossOrigin(origins = {"*", "http://127.0.0.1:8000"})
 public class AvatarUploadController {
     private static final String SESSION_KEY = "SESSION_KEY";
     private static UserDAO userService;
