@@ -1,6 +1,7 @@
 package services.dao;
 
 
+import org.springframework.transaction.annotation.Transactional;
 import services.exceptions.DatabaseConnectionException;
 import services.model.User;
 import org.springframework.dao.DataAccessException;
@@ -13,13 +14,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Repository
+@Transactional
 public class UserDAO {
     private static JdbcTemplate jdbcTemplate;
-    private final Logger logger = Logger.getLogger(UserDAO.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(UserDAO.class.getName());
 
     public UserDAO(JdbcTemplate jdbcTemplate) {
         //noinspection AccessStaticViaInstance
@@ -45,7 +47,7 @@ public class UserDAO {
                 return true;
             }
         } catch (DataAccessException e) {
-            logger.log(Level.WARNING, "Exception : ", e);
+            logger.warn("Exception : ", e);
             throw new DatabaseConnectionException("Can't connect to the database", e);
         }
 
@@ -58,7 +60,7 @@ public class UserDAO {
             final String sql = "SELECT * FROM \"User\" WHERE email = ?::citext";
             return jdbcTemplate.queryForObject(sql, new Object[]{email}, new UserMapper());
         } catch (DataAccessException e) {
-            logger.log(Level.WARNING, "Exception : ", e);
+            logger.warn("Exception : ", e);
             throw new DatabaseConnectionException("Can't connect to the database", e);
         }
     }
@@ -102,7 +104,7 @@ public class UserDAO {
                 jdbcTemplate.update(sql.toString(), sqlParameters.toArray());
                 return true;
             } catch (DataAccessException e) {
-                logger.log(Level.WARNING, "Exception : ", e);
+                logger.warn("Exception : ", e);
                 throw new DatabaseConnectionException("Can't connect to the database", e);
             }
         }
@@ -120,7 +122,7 @@ public class UserDAO {
                         new Object[]{userToUpdate.getAvatar(), userToUpdate.getEmail()});
                 return true;
             } catch (DataAccessException e) {
-                logger.log(Level.WARNING, "Exception : ", e);
+                logger.warn("Exception : ", e);
                 throw new DatabaseConnectionException("Can't connect to the database", e);
             }
         }
