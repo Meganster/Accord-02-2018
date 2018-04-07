@@ -35,7 +35,7 @@ Bubble Wars - веб-версия игры Auralux
 - [Web](https://bubblewars.herokuapp.com/) (master)
 ## Backend
 - [Repository](https://github.com/java-park-mail-ru/Accord-02-2018)
-- [Web](https://backend-accord-02-2018.herokuapp.com/)
+- [Web](https://backend-accord-02-2018.herokuapp.com/) (working)
 ## Documentation
 - [Backend API Swagger](https://app.swaggerhub.com/apis/Meganster/Tech_API/1.0.0)
 - [Frontend JS modules docs]()
