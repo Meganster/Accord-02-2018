@@ -17,12 +17,12 @@ Bubble Wars - веб-версия игры Auralux
 
 # Travis CI status
 ## frontend
-### master [![Build Status](https://travis-ci.org/frontend-park-mail-ru/2018_1_Accord.svg?branch=master)](https://travis-ci.org/frontend-park-mail-ru/2018_1_Accord)
-### module-1 [![Build Status](https://travis-ci.org/frontend-park-mail-ru/2018_1_Accord.svg?branch=module-1)](https://travis-ci.org/frontend-park-mail-ru/2018_1_Accord)
+### master ***[![Build Status](https://travis-ci.org/frontend-park-mail-ru/2018_1_Accord.svg?branch=master)](https://travis-ci.org/frontend-park-mail-ru/2018_1_Accord)***
+### module-1 ***[![Build Status](https://travis-ci.org/frontend-park-mail-ru/2018_1_Accord.svg?branch=module-1)](https://travis-ci.org/frontend-park-mail-ru/2018_1_Accord)***
 
 ## backend
-### dev [![Build Status](https://travis-ci.org/Meganster/Accord-02-2018.svg?branch=dev)](https://travis-ci.org/Meganster/Accord-02-2018)
-### working [![Build Status](https://travis-ci.org/Meganster/Accord-02-2018.svg?branch=working)](https://travis-ci.org/Meganster/Accord-02-2018)
+### dev ***[![Build Status](https://travis-ci.org/Meganster/Accord-02-2018.svg?branch=dev)](https://travis-ci.org/Meganster/Accord-02-2018)***
+### working ***[![Build Status](https://travis-ci.org/Meganster/Accord-02-2018.svg?branch=working)](https://travis-ci.org/Meganster/Accord-02-2018)***
 
 
 # Project links
