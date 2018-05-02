@@ -43,7 +43,8 @@ public final class GameRoomService {
             final WebSocketSession firstPlayerSession = queue.poll();
             final WebSocketSession secondPlayerSession = queue.peek();
 
-            if (!isSameUserId(firstPlayerSession, secondPlayerSession)) {
+            if (firstPlayerSession != null && secondPlayerSession != null
+                    && !isSameUserId(firstPlayerSession, secondPlayerSession)) {
                 // извлечем secondPlayerSession из верхушки очереди
                 queue.poll();
 
@@ -81,7 +82,7 @@ public final class GameRoomService {
 
     public void updateGameRoomState(ClientRequestData clientData, WebSocketSession session) {
         if (!gameRoomsMap.isEmpty()) {
-            final GameRoom gameRoomForUpdate = gameRoomsMap.get((Long) session.getAttributes().get("RoomID"));
+            final GameRoom gameRoomForUpdate = gameRoomsMap.get(session.getAttributes().get("RoomID"));
             final Long userID = (Long) session.getAttributes().get("UserID");
 
             TaskRunner.updateGameRoom(gameRoomForUpdate, clientData, userID);

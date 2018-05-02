@@ -13,8 +13,6 @@ import ru.mail.park.websocket.SocketHandler;
 // см MyWebMvcConfig
 @Configuration
 public class ApplicationConfig {
-
-    //TODO use this encoder?
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

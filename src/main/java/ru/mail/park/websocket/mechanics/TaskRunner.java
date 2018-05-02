@@ -8,6 +8,7 @@ import ru.mail.park.websocket.models.Homer;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+// TODO rewrite for pointer functions
 public final class TaskRunner {
     private static final TaskRunner INSTANCE = new TaskRunner();
     private static final int THREADS_NUMBER = Config.THREADS_NUMBER;
@@ -18,20 +19,14 @@ public final class TaskRunner {
     }
 
     public static void updateGameRoom(GameRoom gameRoom, ClientRequestData clientData, Long userID) {
-        INSTANCE.tickExecutor.execute(() -> {
-            gameRoom.updatePlayersState(clientData, userID);
-        });
+        INSTANCE.tickExecutor.execute(() -> gameRoom.updatePlayersState(clientData, userID));
     }
 
     public static void solveDonutEndPosition(Donut donut, Homer homer, Boolean isLeft) {
-        INSTANCE.tickExecutor.execute(() -> {
-            Mechanics.solveDonutEndPosition(donut, homer, isLeft);
-        });
+        INSTANCE.tickExecutor.execute(() -> Mechanics.solveDonutEndPosition(donut, homer, isLeft));
     }
 
     public static void updateHomerState(Homer homer, long time) {
-        INSTANCE.tickExecutor.execute(() -> {
-            Mechanics.updateHomerState(homer, time);
-        });
+        INSTANCE.tickExecutor.execute(() -> Mechanics.updateHomerState(homer, time));
     }
 }

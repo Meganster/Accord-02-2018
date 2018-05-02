@@ -2,6 +2,7 @@ package ru.mail.park.websocket.mechanics;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.mail.park.websocket.Config;
 import ru.mail.park.websocket.models.Donut;
 import ru.mail.park.websocket.models.Homer;
 import ru.mail.park.websocket.models.base.Coordinate;
@@ -9,6 +10,7 @@ import ru.mail.park.websocket.models.base.Coordinate;
 public class Mechanics {
     private static final Logger LOGGER = LoggerFactory.getLogger(Mechanics.class);
 
+    // TODO repair math for right player
     public static void solveDonutEndPosition(Donut donut, Homer homer, Boolean isLeft) {
         if (isLeft) {
             final Coordinate startPosition = donut.getStartPosition();
@@ -52,9 +54,9 @@ public class Mechanics {
             LOGGER.warn("Turn Homer in back current");
 
             homer.setVelocity(-1 * homer.getVelocity());
-            homer.setPositionY(homer.getPositionY() + homer.getVelocity() * (double) time * 0.001);
+            homer.setPositionY(homer.getPositionY() + homer.getVelocity() * (double) time * Config.ACCURACY_OF_STEP);
         } else {
-            homer.setPositionY(homer.getPositionY() + homer.getVelocity() * (double) time * 0.001);
+            homer.setPositionY(homer.getPositionY() + homer.getVelocity() * (double) time * Config.ACCURACY_OF_STEP);
         }
     }
 

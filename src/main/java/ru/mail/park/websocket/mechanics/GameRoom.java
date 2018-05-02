@@ -141,15 +141,6 @@ public class GameRoom {
         }
     }
 
-    @Override
-    public String toString() {
-        return '['
-                + "first=" + first
-                + ", second=" + second
-                + ", isFinished=" + isFinished
-                + ']';
-    }
-
     private void updatePlayerState(Player player, ClientRequestData newState) {
         if (newState.getPosition() == null) {
             LOGGER.warn("Error json from client");
@@ -166,10 +157,11 @@ public class GameRoom {
             player.getDonut().setVelocity(newState.getVelocity());
             player.getDonut().setAngle(newState.getAngle());
 
-            TaskRunner.solveDonutEndPosition(player.getDonut(), homer, player.getPositionX() < 50);
+            TaskRunner.solveDonutEndPosition(player.getDonut(), homer, player.getPositionX() < Config.MIDDLE_OF_BOARD);
         }
     }
 
+    // TODO write check connection for both users
     public boolean checkPlayersConnection() {
         return true;
     }

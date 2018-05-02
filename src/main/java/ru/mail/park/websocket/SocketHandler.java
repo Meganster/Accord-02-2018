@@ -99,6 +99,7 @@ public class SocketHandler extends TextWebSocketHandler {
         final CloseStatus status = closeStatus;
 
         if (status == null) {
+            //noinspection UnusedAssignment
             closeStatus = SERVER_ERROR;
         }
 
@@ -110,6 +111,7 @@ public class SocketHandler extends TextWebSocketHandler {
                 gameRoomService.removeFromQueue(session);
             }
 
+            //noinspection ConstantConditions
             session.close(status);
         } catch (IOException ignore) {
             LOGGER.debug("Ignore", ignore);
