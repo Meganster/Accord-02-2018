@@ -185,8 +185,8 @@ public class GameRoom {
 
     private static String createMessage(String message, Integer score) {
         return '{'
-                + "'message': " + message
-                + ", 'score': " + score
+                + "\"message\": \"" + message
+                + "\", \"score\": " + score
                 + '}';
     }
 }

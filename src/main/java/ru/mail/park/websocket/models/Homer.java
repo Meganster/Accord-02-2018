@@ -67,7 +67,7 @@ public class Homer {
     @Override
     public String toString() {
         return '{'
-                + "'position': " + position.toString()
+                + "\"position\": " + position.toString()
                 + '}';
     }
 }
