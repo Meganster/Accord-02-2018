@@ -2,7 +2,7 @@ package ru.mail.park.websocket;
 
 public class Config {
     // STEP_TIME for GameLoop
-    public static final long STEP_TIME = 40;
+    public static final long STEP_TIME = 80;
 
     // THREADS_NUMBER for TaskRunner
     public static final int THREADS_NUMBER = 5;

@@ -33,12 +33,10 @@ public class GameLoop implements Runnable {
                 final long before = clock.millis();
 
                 if (!gameMechanics.checkPlayersConnection()) {
-                    LOGGER.warn("!gameMechanics.checkPlayersConnection() = " + !gameMechanics.checkPlayersConnection());
                     gameMechanics.stopGame();
                 }
 
                 if (gameMechanics.tryFinishGame()) {
-                    LOGGER.warn(gameMechanics.isFinished() + "");
                     gameMechanics.stopGame();
                 }
 
