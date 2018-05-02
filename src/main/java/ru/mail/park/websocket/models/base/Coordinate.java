@@ -2,6 +2,7 @@ package ru.mail.park.websocket.models.base;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.json.JSONObject;
 
 //CHECKSTYLE:OFF
 public class Coordinate {
@@ -38,19 +39,11 @@ public class Coordinate {
         this.y = y;
     }
 
-    @Override
-    public String toString() {
-        return '{'
-                + "'x': " + x
-                + ", 'y': " + y
-                + '}';
-    }
-
-    /*public JSONObject toJSON() {
+    public JSONObject toJSON() {
         final JSONObject json = new JSONObject();
         json.put("x", this.x);
         json.put("y", this.y);
 
         return json;
-    }*/
+    }
 }

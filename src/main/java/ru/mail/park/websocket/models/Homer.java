@@ -2,6 +2,7 @@ package ru.mail.park.websocket.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.json.JSONObject;
 import ru.mail.park.websocket.models.base.Coordinate;
 
 public class Homer {
@@ -57,17 +58,10 @@ public class Homer {
         return velocity;
     }
 
-    /*public JSONObject toJSON() {
+    public JSONObject toJSON() {
         final JSONObject json = new JSONObject();
         json.put("position", position.toJSON());
 
         return json;
-    }*/
-
-    @Override
-    public String toString() {
-        return '{'
-                + "'position': " + position.toString()
-                + '}';
     }
 }

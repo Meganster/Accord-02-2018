@@ -2,6 +2,7 @@ package ru.mail.park.websocket.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.json.JSONObject;
 import org.springframework.web.socket.WebSocketSession;
 import ru.mail.park.websocket.models.base.Coordinate;
 
@@ -85,17 +86,7 @@ public class Player {
         this.donut = donut;
     }
 
-    @Override
-    public String toString() {
-        return '{'
-                + "'userID': " + userID
-                + ", 'score': " + score
-                + ", 'position': " + position.toString()
-                + ", 'donut': " + donut.toString()
-                + '}';
-    }
-
-    /*public JSONObject toJSON() {
+    public JSONObject toJSON() {
         final JSONObject json = new JSONObject();
         json.put("userID", userID);
         json.put("score", score);
@@ -103,5 +94,5 @@ public class Player {
         json.put("donut", donut.toJSON());
 
         return json;
-    }*/
+    }
 }

@@ -88,13 +88,13 @@ public class GameRoom {
 
             // отправим данные для отображения
             // второму игроку
-            sendChanges(first.toString(), second.getSession());
+            sendChanges(first.toJSON().toString(), second.getSession());
         } else {
             updatePlayerState(second, newState);
 
             // отправим данные для отображения
             // первому игроку
-            sendChanges(second.toString(), first.getSession());
+            sendChanges(second.toJSON().toString(), first.getSession());
         }
     }
 
@@ -103,8 +103,8 @@ public class GameRoom {
     }
 
     public void sendHomerState() {
-        sendChanges(homer.toString(), first.getSession());
-        sendChanges(homer.toString(), second.getSession());
+        sendChanges(homer.toJSON().toString(), first.getSession());
+        sendChanges(homer.toJSON().toString(), second.getSession());
     }
 
     public boolean tryFinishGame() {
@@ -185,8 +185,8 @@ public class GameRoom {
 
     private static String createMessage(String message, Integer score) {
         return '{'
-                + "'message': " + message
-                + ", 'score': " + score
+                + "\"message\": \"" + message
+                + "\", \"score\": " + score
                 + '}';
     }
 }

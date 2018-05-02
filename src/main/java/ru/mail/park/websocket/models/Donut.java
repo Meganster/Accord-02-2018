@@ -2,6 +2,7 @@ package ru.mail.park.websocket.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.json.JSONObject;
 import ru.mail.park.websocket.models.base.Coordinate;
 
 public class Donut {
@@ -75,18 +76,7 @@ public class Donut {
         this.isHit = isHit;
     }
 
-    @Override
-    public String toString() {
-        return '{'
-                + "'startPosition': " + startPosition.toString()
-                + ", 'endPosition': " + endPosition.toString()
-                + ", 'velocity': " + velocity
-                + ", 'angle': " + angle
-                + ", 'isHit': " + isHit
-                + '}';
-    }
-
-    /*public JSONObject toJSON() {
+    public JSONObject toJSON() {
         final JSONObject json = new JSONObject();
         json.put("startPosition", startPosition.toJSON());
         json.put("endPosition", endPosition.toJSON());
@@ -95,5 +85,5 @@ public class Donut {
         json.put("isHit", isHit);
 
         return json;
-    }*/
+    }
 }
