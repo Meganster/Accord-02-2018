@@ -1,4 +1,4 @@
-package services;
+package ru.mail.park;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,6 +31,6 @@ public class Application {
             avatarFolder.mkdir();
         }
 
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(new Class[]{WebSocketConfig.class, Application.class}, args);
     }
 }

@@ -1,4 +1,4 @@
-package services.model;
+package ru.mail.park.models;
 
 
 @SuppressWarnings("unused")
@@ -23,7 +23,7 @@ public class User {
         this.password = user.password;
         this.email = user.email;
         this.rating = user.rating;
-        this.setDefaultAvatar();
+        this.avatar = user.avatar;
     }
 
     public User() {
@@ -81,5 +81,6 @@ public class User {
 
     public void setDefaultAvatar() {
         this.avatar = "default.jpg";
+
     }
 }

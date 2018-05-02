@@ -1,14 +1,14 @@
-package services.controller;
+package ru.mail.park.controller;
 
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import services.dao.UserDAO;
-import services.exceptions.DatabaseConnectionException;
-import services.model.ScoreBoard;
-import services.model.ServerResponse;
-import services.model.User;
+import ru.mail.park.dao.UserDAO;
+import ru.mail.park.exceptions.DatabaseConnectionException;
+import ru.mail.park.models.ScoreBoard;
+import ru.mail.park.models.ServerResponse;
+import ru.mail.park.models.User;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -40,10 +40,10 @@ public class ScoreBoardController {
 
         final List<User> userInfoList;
         try {
-            userInfoList = userService.getSortedUsersInfoByRating(USER_PER_PAGE, page);
+           userInfoList = userService.getSortedUsersInfoByRating(USER_PER_PAGE, page);
         } catch (DatabaseConnectionException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ServerResponse("Error", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ServerResponse("Error",
+                    e.getMessage()));
         }
 
         final ScoreBoard scoreBoardResponse = new ScoreBoard(page, numberOfPages, userInfoList);

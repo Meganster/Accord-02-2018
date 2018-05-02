@@ -1,6 +1,5 @@
-package services.model;
+package ru.mail.park.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ScoreBoard {
@@ -12,7 +11,8 @@ public class ScoreBoard {
     public ScoreBoard() {
         this.currentPage = 0;
         this.numberOfPages = 0;
-        this.scoreBoard = new ArrayList<>();
+        //noinspection ConstantConditions
+        this.scoreBoard = null;
     }
 
     public ScoreBoard(int currentPage, int numberOfPages, List<User> usersList) {
