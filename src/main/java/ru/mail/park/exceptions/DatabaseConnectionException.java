@@ -1,4 +1,4 @@
-package services.exceptions;
+package ru.mail.park.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -1,4 +1,4 @@
-package services.dao;
+package ru.mail.park.dao;
 
 
 import org.junit.Test;
@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import services.model.User;
+import ru.mail.park.dao.UserDAO;
+import ru.mail.park.models.User;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

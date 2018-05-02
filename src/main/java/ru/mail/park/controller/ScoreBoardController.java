@@ -1,14 +1,14 @@
-package services.controller;
+package ru.mail.park.controller;
 
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import services.dao.UserDAO;
-import services.exceptions.DatabaseConnectionException;
-import services.model.ScoreBoard;
-import services.model.ServerResponse;
-import services.model.User;
+import ru.mail.park.dao.UserDAO;
+import ru.mail.park.exceptions.DatabaseConnectionException;
+import ru.mail.park.models.ScoreBoard;
+import ru.mail.park.models.ServerResponse;
+import ru.mail.park.models.User;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

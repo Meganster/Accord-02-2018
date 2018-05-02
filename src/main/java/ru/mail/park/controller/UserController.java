@@ -1,12 +1,13 @@
-package services.controller;
+package ru.mail.park.controller;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.*;
-import services.dao.UserDAO;
-import services.exceptions.DatabaseConnectionException;
-import services.model.ServerResponse;
-import services.model.User;
+import ru.mail.park.dao.UserDAO;
+import ru.mail.park.exceptions.DatabaseConnectionException;
+import ru.mail.park.models.User;
+import ru.mail.park.models.ServerResponse;
 import org.springframework.web.bind.annotation.*;
+import ru.mail.park.websocket.Config;
 
 
 import javax.servlet.http.HttpServletResponse;
@@ -14,13 +15,13 @@ import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 import java.io.*;
 
-import static services.Application.PATH_AVATARS_FOLDER;
+import static ru.mail.park.Application.PATH_AVATARS_FOLDER;
 
 
 @RestController
-@CrossOrigin(origins = {"http://127.0.0.1:8000"})
+@CrossOrigin(origins = {"*", "http://127.0.0.1:8000"})
 public class UserController {
-    private static final String SESSION_KEY = "SESSION_KEY";
+    private static final String SESSION_KEY = Config.SESSION_KEY;
     private static final String ERROR_EMAIL = "Empty email";
     private static final String ERROR_PASSWORD = "Empty password";
     private static final String ERROR_NICKNAME = "Empty nickname";
@@ -50,37 +51,44 @@ public class UserController {
 
     @PostMapping(value = "/register", produces = "application/json")
     public ResponseEntity<?> register(@RequestBody @NotNull User userToRegister, HttpSession httpSession) {
-        final StringBuilder errorString = new StringBuilder();
+        // проверим не залогинен ли уже пользователь
+        final User userFromSession = (User) httpSession.getAttribute(SESSION_KEY);
+        if (userFromSession == null) {
+            final StringBuilder errorString = new StringBuilder();
 
-        if (isEmptyField(userToRegister.getEmail())) {
-            errorString.append(ERROR_EMAIL);
+            if (isEmptyField(userToRegister.getEmail())) {
+                errorString.append(ERROR_EMAIL);
+            }
+
+            if (isEmptyField(userToRegister.getPassword())) {
+                errorString.append(' ' + ERROR_PASSWORD);
+            }
+
+            if (isEmptyField(userToRegister.getNickname())) {
+                errorString.append(' ' + ERROR_NICKNAME);
+            }
+
+            if (errorString.length() > 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ServerResponse("Error",
+                        errorString.toString()));
+            }
+
+            if (!userService.register(userToRegister)) {
+                // если попали в этот блок
+                // значит такой юзер с таким мейлом уже существует
+                // поэтому просто вернем ошибку
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ServerResponse("Error",
+                        "User with same email already exists"));
+            }
+
+            final User userForSession = userService.getUser(userToRegister.getEmail());
+            httpSession.setAttribute(SESSION_KEY, userForSession);
+
+            return ResponseEntity.status(HttpStatus.OK).body(userForSession);
         }
 
-        if (isEmptyField(userToRegister.getPassword())) {
-            errorString.append(' ' + ERROR_PASSWORD);
-        }
-
-        if (isEmptyField(userToRegister.getNickname())) {
-            errorString.append(' ' + ERROR_NICKNAME);
-        }
-
-        if (errorString.length() > 0) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ServerResponse("Error",
-                    errorString.toString()));
-        }
-
-        if (!userService.register(userToRegister)) {
-            // если попали в этот блок
-            // значит такой юзер с таким мейлом уже существует
-            // поэтому просто вернем ошибку
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ServerResponse("Error",
-                    "User with same email already exists"));
-        }
-
-        final User userForSession = userService.getUser(userToRegister.getEmail());
-        httpSession.setAttribute(SESSION_KEY, userForSession);
-
-        return ResponseEntity.status(HttpStatus.OK).body(userForSession);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new
+                ServerResponse("Error", "You have been already login"));
     }
 
 
@@ -156,36 +164,43 @@ public class UserController {
 
     @PostMapping(value = "/login", produces = "application/json")
     public ResponseEntity<?> login(@RequestBody User userToLogin, HttpSession httpSession) {
-        final StringBuilder errorString = new StringBuilder();
+        // проверим не залогинен ли уже пользователь
+        final User userFromSession = (User) httpSession.getAttribute(SESSION_KEY);
+        if (userFromSession == null) {
+            final StringBuilder errorString = new StringBuilder();
 
 
-        if (isEmptyField(userToLogin.getEmail())) {
-            errorString.append(ERROR_EMAIL);
-        }
-
-        if (isEmptyField(userToLogin.getPassword()) || userToLogin.getPassword().length() > MAX_LENGTH_PASSWORD) {
-            errorString.append(' ' + ERROR_PASSWORD);
-        }
-
-        if (errorString.length() > 0) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ServerResponse("Error",
-                    errorString.toString()));
-        }
-
-        try {
-            if (!userService.login(userToLogin)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ServerResponse("Error",
-                        "Invalid email or password"));
+            if (isEmptyField(userToLogin.getEmail())) {
+                errorString.append(ERROR_EMAIL);
             }
-        } catch (DatabaseConnectionException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ServerResponse("Error",
-                    e.getMessage()));
+
+            if (isEmptyField(userToLogin.getPassword()) || userToLogin.getPassword().length() > MAX_LENGTH_PASSWORD) {
+                errorString.append(' ' + ERROR_PASSWORD);
+            }
+
+            if (errorString.length() > 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ServerResponse("Error",
+                        errorString.toString()));
+            }
+
+            try {
+                if (!userService.login(userToLogin)) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ServerResponse("Error",
+                            "Invalid email or password"));
+                }
+            } catch (DatabaseConnectionException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ServerResponse("Error",
+                        e.getMessage()));
+            }
+
+            final User userForSession = userService.getUser(userToLogin.getEmail());
+            httpSession.setAttribute(SESSION_KEY, userForSession);
+
+            return ResponseEntity.status(HttpStatus.OK).body(userForSession);
         }
 
-        final User userForSession = userService.getUser(userToLogin.getEmail());
-        httpSession.setAttribute(SESSION_KEY, userForSession);
-
-        return ResponseEntity.status(HttpStatus.OK).body(userForSession);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new
+                ServerResponse("Error", "You have been already login"));
     }
 
     @DeleteMapping(value = "/logout", produces = "application/json")

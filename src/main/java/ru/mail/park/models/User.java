@@ -1,4 +1,4 @@
-package services.model;
+package ru.mail.park.models;
 
 
 @SuppressWarnings("unused")

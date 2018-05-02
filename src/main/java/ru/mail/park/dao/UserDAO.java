@@ -1,8 +1,8 @@
-package services.dao;
+package ru.mail.park.dao;
 
 
-import services.exceptions.DatabaseConnectionException;
-import services.model.User;
+import ru.mail.park.exceptions.DatabaseConnectionException;
+import ru.mail.park.models.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
