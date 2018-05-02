@@ -120,6 +120,8 @@ public class GameRoom {
         gameLoop.stop();
         thread.interrupt();
 
+        notePlayers();
+
         // закрываем сессию
         // первому игроку
         try {
@@ -139,6 +141,26 @@ public class GameRoom {
         } catch (IOException e) {
             LOGGER.warn("Error closing session of second player");
         }
+    }
+
+    public void notePlayers() {
+        if (first.getScore() == second.getScore()) {
+            sender.send(first.getSession(), createMessage("It is draw", first.getScore()));
+            sender.send(second.getSession(), createMessage("It is draw", second.getScore()));
+            return;
+        }
+
+        if (first.getScore() > second.getScore()) {
+            sender.send(first.getSession(), createMessage("You are win", first.getScore()));
+            sender.send(second.getSession(), createMessage("You are lose", second.getScore()));
+        } else {
+            sender.send(second.getSession(), createMessage("You are win", second.getScore()));
+            sender.send(first.getSession(), createMessage("You are lose", first.getScore()));
+        }
+    }
+
+    public boolean checkPlayersConnection() {
+        return first.getSession().isOpen() && second.getSession().isOpen();
     }
 
     private void updatePlayerState(Player player, ClientRequestData newState) {
@@ -161,8 +183,10 @@ public class GameRoom {
         }
     }
 
-    // TODO write check connection for both users
-    public boolean checkPlayersConnection() {
-        return true;
+    private static String createMessage(String message, Integer score) {
+        return '{'
+                + "'message': " + message
+                + ", 'score': " + score
+                + '}';
     }
 }
