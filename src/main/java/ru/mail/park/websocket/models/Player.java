@@ -88,10 +88,10 @@ public class Player {
     @Override
     public String toString() {
         return '{'
-                + "userID=" + userID
-                + ", score=" + score
-                + ", position=" + position.toString()
-                + ", donut=" + donut.toString()
+                + "'userID': " + userID
+                + ", 'score': " + score
+                + ", 'position': " + position.toString()
+                + ", 'donut': " + donut.toString()
                 + '}';
     }
 

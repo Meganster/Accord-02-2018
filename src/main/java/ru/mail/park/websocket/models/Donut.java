@@ -78,11 +78,11 @@ public class Donut {
     @Override
     public String toString() {
         return '{'
-                + "startPosition=" + startPosition.toString()
-                + ", endPosition=" + endPosition.toString()
-                + ", velocity=" + velocity
-                + ", angle=" + angle
-                + ", isHit=" + isHit
+                + "'startPosition': " + startPosition.toString()
+                + ", 'endPosition': " + endPosition.toString()
+                + ", 'velocity': " + velocity
+                + ", 'angle': " + angle
+                + ", 'isHit': " + isHit
                 + '}';
     }
 
